@@ -1,0 +1,69 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+html,body{margin:0;background:#F2EDE3}
+#f{width:2600px;height:1180px;position:relative;background:#F2EDE3;font-family:"DM Sans",system-ui,sans-serif;color:#2B2F2A;padding:48px 56px;box-sizing:border-box}
+h1{font-family:"Shippori Mincho",serif;font-size:44px;font-weight:500;margin:0 0 10px;letter-spacing:.04em}
+.sub{font-size:22px;color:#6B6F66;margin-bottom:28px}
+.legend{position:absolute;right:56px;top:60px;display:flex;gap:22px;font-size:20px}
+.legend span{display:inline-flex;align-items:center;gap:8px}.legend i{width:26px;height:16px;border-radius:4px;display:inline-block}
+.cols{display:grid;grid-template-columns:repeat(6,1fr);gap:26px}
+.col{display:flex;flex-direction:column;align-items:stretch;gap:0}
+.cell{background:#5F6E58;color:#F2EDE3;border-radius:14px;padding:16px 14px;text-align:center;font-family:"Shippori Mincho",serif;font-size:30px;letter-spacing:.04em;font-weight:500}
+.cell small{display:block;font-family:"DM Sans";font-size:17px;opacity:.85;margin-top:4px;letter-spacing:0}
+.arrow{height:30px;position:relative}.arrow:after{content:"";position:absolute;left:50%;top:0;width:2px;height:22px;background:#8A8A84}.arrow:before{content:"";position:absolute;left:calc(50% - 6px);top:20px;border:6px solid transparent;border-top:8px solid #8A8A84}
+.box{background:#FFFCF5;border:2px solid #DDD6C6;border-radius:12px;padding:14px 14px;font-size:20px;line-height:1.45}
+.box b{display:block;font-size:21px;margin-bottom:4px}
+.box.t1{border-color:#5F6E58;background:#EEF1EA}.box.t2{border-color:#B07D2A;background:#FBF3E3}.box.t3{border-color:#5B6B7A;background:#E9EEF2}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cta{margin-top:auto;padding-top:14px}
+.end{font-family:"JetBrains Mono",monospace;font-size:17px;color:#6B6F66;text-align:center;letter-spacing:.08em;margin-top:12px}
+.foot{position:absolute;left:56px;right:56px;bottom:40px;display:flex;gap:40px;font-size:21px;color:#2B2F2A}
+.foot div{background:#FFFCF5;border:2px solid #DDD6C6;border-radius:12px;padding:16px 20px;flex:1;line-height:1.5}
+.foot b{font-family:"Shippori Mincho",serif;font-size:23px}
+</style></head><body><div id="f">
+<h1>客戶圖文選單 v2 ・ 六格引導流程</h1>
+<div class="sub">原則：每條路最多兩步就到終點；終點只有三種；固定內容先回、真人問題才交 AI 客服擬稿由 Wayne 核可</div>
+<div class="legend"><span><i style="background:#EEF1EA;border:2px solid #5F6E58"></i>固定回覆（立刻、免核可）</span><span><i style="background:#FBF3E3;border:2px solid #B07D2A"></i>頁面自助</span><span><i style="background:#E9EEF2;border:2px solid #5B6B7A"></i>留言 → AI 客服擬稿 → Wayne 核可</span></div>
+<div class="cols">
+ <div class="col"><div class="cell">服務與費用<small>新客</small></div><div class="arrow"></div>
+  <div class="box t1"><b>方案三選一卡</b>訂閱式養護／單次養護／空間植栽設計（三顆按鈕）</div><div class="arrow"></div>
+  <div class="split"><div class="box t1">訂閱式→費用卡<br>卡底「我要約場勘」</div><div class="box t1">單次→費率卡＋預約連結</div></div><div class="arrow"></div>
+  <div class="box t3">空間設計／其他→留言需求（地點、坪數、預算）</div>
+  <div class="cta end">終點：約場勘／預約／留言</div></div>
+
+ <div class="col"><div class="cell">作品案例<small>新客</small></div><div class="arrow"></div>
+  <div class="box t1"><b>分類輪播卡</b>辦公室／居家／商業空間…每格一鈕開該分類頁</div><div class="arrow"></div>
+  <div class="box t2">案例頁自行導覽（手機版、可轉傳）</div><div class="arrow"></div>
+  <div class="box t3">看到喜歡的回傳「#案例編號」→ 系統自動回該案例卡 → 留言想做類似的 → AI 擬稿</div>
+  <div class="cta end">終點：以案例編號開啟詢價</div></div>
+
+ <div class="col"><div class="cell">常見問答<small>新客・舊客</small></div><div class="arrow"></div>
+  <div class="box t1"><b>FAQ 輪播卡（5 題）</b>多久來一次／植物枯了怎麼辦／可以只做一次嗎／怎麼收費與付款／服務區域與場勘</div><div class="arrow"></div>
+  <div class="box t1">每題一句話答案＋相關按鈕（費用卡／預約／約場勘）</div><div class="arrow"></div>
+  <div class="box t3">沒答到的→「直接留言」</div>
+  <div class="cta end">終點：自助解答或留言</div></div>
+
+ <div class="col"><div class="cell">我的紀錄與文件<small>舊客</small></div><div class="arrow"></div>
+  <div class="split"><div class="box t1">已綁定→四鈕卡：最新報告／文件副本／匯款資訊／發票需求</div><div class="box t2">未綁定→基本資料卡（專屬連結、1 分鐘）</div></div><div class="arrow"></div>
+  <div class="split"><div class="box t1">最新報告連結<br>匯款資訊兩則</div><div class="box t3">文件副本／發票二聯三聯→留言→Wayne 核可後補發</div></div>
+  <div class="cta end">終點：拿到連結或留言</div></div>
+
+ <div class="col"><div class="cell">預約單次養護<small>舊客・新客</small></div><div class="arrow"></div>
+  <div class="box t1">即時產專屬預約連結（綁定這位客戶、14 天）</div><div class="arrow"></div>
+  <div class="box t2">預約頁：區域→時間二選一→現場資訊→即時計價→送出</div><div class="arrow"></div>
+  <div class="box t1">系統推 Wayne 全填答 → 核可建案 → 客戶收確認（既有流程）</div>
+  <div class="cta end">終點：成案</div></div>
+
+ <div class="col"><div class="cell">聯絡我們・約場勘<small>新客</small></div><div class="arrow"></div>
+  <div class="box t1">請留言三件事：地點／空間大小或盆數／想要的服務<br>＋三顆快速回覆</div><div class="arrow"></div>
+  <div class="box t3">客戶留言 → AI 客服查客戶檔案與規則擬稿（必要時附基本資料卡）→ Wayne 核可 → 送出</div><div class="arrow"></div>
+  <div class="box t1">之後靜默→跟進班（第 3 天）自動擬跟進稿</div>
+  <div class="cta end">終點：場勘或報價</div></div>
+</div>
+<div class="foot">
+ <div><b>收斂</b><br>六格全部落在三種終點；固定回覆每一則結尾都有下一步（約場勘／預約／留言）。不會出現「按了沒下文」。</div>
+ <div><b>AI 客服的角色</b><br>按鈕不交給 AI、固定內容立刻回（零等待、不佔核可）；客戶一打字才進 AI 擬稿＋核可。等直發閘門開了，FAQ 類再改成 AI 直答。</div>
+ <div><b>匯款與發票</b><br>收進「我的紀錄與文件」的按鈕，關鍵字「匯款帳號」照舊自動回；騰出一格給常見問答。</div>
+</div>
+</div></body></html>
