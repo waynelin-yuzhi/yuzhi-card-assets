@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500&display=swap">
+<style>
+/* 185mm × 122mm（橫向雷射雕刻卡、Rotrics 參數）@ 300dpi → 2185 × 1441 px；直向 132×190 → 1559 × 2244 */
+:root{--w:2185px;--h:1441px;--ink:#1a1a1a}
+html,body{margin:0;padding:0;background:#fff}
+.card{position:relative;width:var(--w);height:var(--h);background:#fff;overflow:hidden;font-family:'Huninn','Noto Sans TC',sans-serif;color:var(--ink)}
+.frame{position:absolute;inset:70px;border:6px solid var(--ink);border-radius:90px}
+.leaf{position:absolute;right:40px;top:-10px;width:900px;height:620px}
+.to{position:absolute;left:190px;top:200px;font-size:92px;letter-spacing:.12em;white-space:nowrap}
+.main{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font-size:330px;letter-spacing:.16em;line-height:1;white-space:nowrap}
+.main.long{font-size:230px;letter-spacing:.1em}
+.main.xlong{font-size:170px;letter-spacing:.06em;white-space:normal;line-height:1.25;padding:0 220px}
+.from{position:absolute;right:200px;bottom:220px;font-size:92px;letter-spacing:.12em;white-space:nowrap}
+.brand{position:absolute;left:0;right:0;bottom:92px;text-align:center;font-family:'Noto Sans TC',sans-serif;font-size:48px;letter-spacing:.42em;color:var(--ink)}
+.portrait .frame{inset:60px;border-radius:80px}
+.portrait .leaf{width:760px;height:540px;right:-40px;top:-20px}
+.portrait .to{left:150px;top:220px;font-size:84px}
+.portrait .main{font-size:300px;letter-spacing:.14em}
+.portrait .main.long{font-size:220px}
+.portrait .main.xlong{font-size:160px;padding:0 160px}
+.portrait .from{right:150px;bottom:260px;font-size:84px}
+</style></head>
+<body><div class="card" id="card">
+<div class="frame"></div>
+<svg class="leaf" viewBox="0 0 900 620" fill="none" stroke="#1a1a1a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M880 20 C 760 120, 640 180, 560 300 C 520 360, 480 420, 430 500"/>
+  <path d="M600 260 C 560 200, 540 150, 560 90 C 600 130, 620 200, 600 260 Z"/>
+  <path d="M520 350 C 470 320, 440 280, 440 220 C 490 240, 520 290, 520 350 Z"/>
+  <path d="M660 190 C 700 140, 760 120, 820 130 C 790 180, 730 210, 660 190 Z"/>
+  <path d="M470 440 C 420 430, 380 400, 360 350 C 410 350, 450 390, 470 440 Z"/>
+  <path d="M750 60 C 790 30, 840 20, 890 30 C 860 70, 800 90, 750 60 Z"/>
+  <path d="M430 500 C 400 540, 370 570, 330 600"/>
+  <path d="M390 560 C 350 560, 320 540, 300 500 C 340 500, 370 520, 390 560 Z"/>
+</svg>
+<div class="to" id="to"></div>
+<div class="main" id="main"></div>
+<div class="from" id="from"></div>
+<div class="brand">YUZHI PLANT Gift Card</div>
+</div>
+<script>
+const q=new URLSearchParams(location.search);
+const to=q.get('to')||'', from=q.get('from')||'', main=q.get('main')||'', orient=q.get('orient')||'landscape';
+if(orient==='portrait'){document.documentElement.style.setProperty('--w','1559px');document.documentElement.style.setProperty('--h','2244px');document.getElementById('card').classList.add('portrait');}
+document.getElementById('to').textContent=to?('祝  '+to):'';
+document.getElementById('from').textContent=from;
+const m=document.getElementById('main'); m.textContent=main;
+const n=[...main].length; if(n>8) m.classList.add('xlong'); else if(n>4) m.classList.add('long');
+</script></body></html>
