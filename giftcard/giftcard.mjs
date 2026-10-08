@@ -1,17 +1,18 @@
 #!/usr/bin/env node
-// 賀卡產生器：node giftcard.mjs --to "收禮公司 收禮人" --from "送禮公司 送禮人" --main "開幕誌慶" [--orient landscape|portrait] [--out /tmp/giftcard]
+// 賀卡產生器：node giftcard.mjs --to "收禮公司 收禮人" --from "送禮公司 送禮人" --main "開幕誌慶" [--orient landscape|portrait] [--mode print|laser] [--out /tmp/giftcard]
+// print＝照 Express 範例（紙紋、灰字、水彩葉）給列印；laser＝純黑白給 Rotrics 雕刻
 // 輸出：<out>/<檔名>.png（黑白、雷射雕刻用、185×122mm@300dpi）＋ <檔名>-preview.jpg（LINE 預覽用）
 import { spawn } from 'node:child_process'; import fs from 'node:fs'; import path from 'node:path';
 const args = Object.fromEntries(process.argv.slice(2).reduce((a, x, i, arr) => { if (x.startsWith('--')) a.push([x.slice(2), (arr[i + 1] && !arr[i + 1].startsWith('--')) ? arr[i + 1] : '1']); return a; }, []));
-const to = args.to || '', from = args.from || '', main = args.main || '', orient = args.orient === 'portrait' ? 'portrait' : 'landscape';
+const to = args.to || '', from = args.from || '', main = args.main || '', orient = args.orient === 'portrait' ? 'portrait' : 'landscape', mode = args.mode === 'laser' ? 'laser' : 'print';
 if (!main || !to) { console.error('要 --to 與 --main（--from 可空）'); process.exit(2); }
 const W = orient === 'portrait' ? 1559 : 2185, H = orient === 'portrait' ? 2244 : 1441;
 const outDir = args.out || '/tmp/giftcard'; fs.mkdirSync(outDir, { recursive: true });
 const stamp = new Date(); const ymd = `${stamp.getFullYear()}${String(stamp.getMonth() + 1).padStart(2, '0')}${String(stamp.getDate()).padStart(2, '0')}`;
 const safe = s => s.replace(/[\\/:*?"<>|\s]+/g, '_').slice(0, 30);
-const base = `${ymd}_賀卡_${safe(to)}_${safe(main)}${orient === 'portrait' ? '_直' : ''}`;
+const base = `${ymd}_賀卡_${safe(to)}_${safe(main)}${orient === 'portrait' ? '_直' : ''}${mode === 'laser' ? '_雷射' : ''}`;
 const tpl = 'file://' + path.resolve(path.dirname(new URL(import.meta.url).pathname), 'template.html');
-const url = `${tpl}?to=${encodeURIComponent(to)}&from=${encodeURIComponent(from)}&main=${encodeURIComponent(main)}&orient=${orient}`;
+const url = `${tpl}?to=${encodeURIComponent(to)}&from=${encodeURIComponent(from)}&main=${encodeURIComponent(main)}&orient=${orient}&mode=${mode}`;
 const prof = '/tmp/chrome-giftcard-' + process.pid, port = 9700 + (process.pid % 100);
 const chrome = spawn('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', ['--headless=new', '--remote-debugging-port=' + port, '--user-data-dir=' + prof, '--no-first-run', '--disable-gpu', '--hide-scrollbars', `--window-size=${W},${H}`, 'about:blank'], { stdio: 'ignore' });
 const sleep = ms => new Promise(r => setTimeout(r, ms)); let targets = null;
@@ -28,5 +29,5 @@ const jpg = await send('Page.captureScreenshot', { format: 'jpeg', quality: 82, 
 chrome.kill(); try { fs.rmSync(prof, { recursive: true, force: true }); } catch {}
 const pngPath = path.join(outDir, base + '.png'), jpgPath = path.join(outDir, base + '-preview.jpg');
 fs.writeFileSync(pngPath, Buffer.from(png.data, 'base64')); fs.writeFileSync(jpgPath, Buffer.from(jpg.data, 'base64'));
-console.log(JSON.stringify({ ok: true, png: pngPath, preview: jpgPath, name: base, to, from, main, orient, mm: orient === 'portrait' ? '132x190' : '185x122' }));
+console.log(JSON.stringify({ ok: true, png: pngPath, preview: jpgPath, name: base, to, from, main, orient, mode, mm: orient === 'portrait' ? '132x190' : '185x122' }));
 process.exit(0);
