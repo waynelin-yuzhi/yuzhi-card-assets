@@ -21,8 +21,9 @@ function findFont(ps) {
   return '';
 }
 const fontPath = findFont('ARYuanB5Std-MD');
-if (!fontPath && !args['allow-fallback']) { console.error(JSON.stringify({ ok: false, error: 'font_missing', detail: '找不到文鼎圓體 B5（AR YuanB5Std）：開 Creative Cloud、確認 Adobe Fonts 已啟用這套字再重跑' })); process.exit(3); }
-const url = `${tpl}?to=${encodeURIComponent(to)}&from=${encodeURIComponent(from)}&main=${encodeURIComponent(main)}&sub=${encodeURIComponent(sub)}&mode=${mode}&font=${encodeURIComponent(fontPath ? 'file://' + fontPath : '')}`;
+const brandFontPath = findFont('Condor-Bold');
+if ((!fontPath || !brandFontPath) && !args['allow-fallback']) { console.error(JSON.stringify({ ok: false, error: 'font_missing', detail: '找不到字型：' + [!fontPath && '文鼎圓體 B5（AR YuanB5Std）', !brandFontPath && 'Condor Bold'].filter(Boolean).join('、') + '。開 Creative Cloud、確認 Adobe Fonts 已啟用再重跑' })); process.exit(3); }
+const url = `${tpl}?to=${encodeURIComponent(to)}&from=${encodeURIComponent(from)}&main=${encodeURIComponent(main)}&sub=${encodeURIComponent(sub)}&mode=${mode}&font=${encodeURIComponent(fontPath ? 'file://' + fontPath : '')}&brandFont=${encodeURIComponent(brandFontPath ? 'file://' + brandFontPath : '')}`;
 const prof = '/tmp/chrome-giftcard-' + process.pid, port = 9700 + (process.pid % 100);
 const chrome = spawn('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', ['--headless=new', '--remote-debugging-port=' + port, '--user-data-dir=' + prof, '--no-first-run', '--disable-gpu', '--hide-scrollbars', `--window-size=${W},${H}`, 'about:blank'], { stdio: 'ignore' });
 const sleep = ms => new Promise(r => setTimeout(r, ms)); let targets = null;
@@ -39,5 +40,5 @@ const jpg = await send('Page.captureScreenshot', { format: 'jpeg', quality: 82, 
 chrome.kill(); try { fs.rmSync(prof, { recursive: true, force: true }); } catch {}
 const pngPath = path.join(outDir, base + '.png'), jpgPath = path.join(outDir, base + '-preview.jpg');
 fs.writeFileSync(pngPath, Buffer.from(png.data, 'base64')); fs.writeFileSync(jpgPath, Buffer.from(jpg.data, 'base64'));
-console.log(JSON.stringify({ ok: true, png: pngPath, preview: jpgPath, name: base, to, from, main, sub, mode, px: `${W}x${H}`, font: fontPath ? 'AR YuanB5Std' : 'Huninn(替代)' }));
+console.log(JSON.stringify({ ok: true, png: pngPath, preview: jpgPath, name: base, to, from, main, sub, mode, px: `${W}x${H}`, font: fontPath ? 'AR YuanB5Std' : '缺', brandFont: brandFontPath ? 'Condor-Bold' : '缺' }));
 process.exit(0);

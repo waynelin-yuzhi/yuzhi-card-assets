@@ -1,61 +1,67 @@
 <!doctype html>
 <html lang="zh-Hant"><head><meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500&display=swap">
 <style>
-/* 底圖＝Express「送禮盆栽祝賀卡片」去字版（assets/bg-landscape.png、2400×1808、4:3）；文字位置照範例（600×452 座標換算成百分比） */
-:root{--ink:#4b4b48;--ink2:#5a5a57}
+/* 底圖＝Express「送禮盆栽祝賀卡片」去字版（紙紋＋水彩葉＋圓角框；2400×1808、4:3）
+   字型：中文＝文鼎圓體 B5（AR YuanB5Std）、品牌列＝Condor Bold；兩套都由 Adobe Fonts 同步在本機、產生器傳路徑進來 */
+:root{--ink:#4a4a47;--ink2:#575754;--brand:#a7b6aa}
 html,body{margin:0;padding:0;background:#fff}
-.card{position:relative;width:2400px;height:1808px;overflow:hidden;font-family:'Huninn','Noto Sans TC',sans-serif;color:var(--ink)}
-.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.to{position:absolute;left:9.6%;top:19%;font-size:104px;letter-spacing:.14em;white-space:nowrap;color:var(--ink2)}
-.mainwrap{position:absolute;left:8%;right:8%;top:50%;transform:translateY(-50%);text-align:center}
-.main{font-size:380px;letter-spacing:.16em;line-height:1.05;white-space:nowrap;color:var(--ink)}
-.sub{margin-top:60px;font-size:100px;letter-spacing:.12em;line-height:1.3;color:var(--ink2);white-space:nowrap}
-.from{position:absolute;right:9.2%;top:80.5%;font-size:104px;letter-spacing:.14em;white-space:nowrap;color:var(--ink2)}
+.card{position:relative;width:2400px;height:1808px;overflow:hidden;font-family:'CardZh',sans-serif;color:var(--ink)}
+.bg{position:absolute;inset:0;width:100%;height:100%}
+.to{position:absolute;left:9.6%;top:19%;font-size:104px;letter-spacing:.14em;white-space:nowrap;color:var(--ink2);line-height:1}
+.from{position:absolute;right:9.2%;top:80.5%;font-size:104px;letter-spacing:.14em;white-space:nowrap;color:var(--ink2);line-height:1}
+.msg{position:absolute;left:0;right:0;text-align:center;color:var(--ink)}
+.msg div{white-space:nowrap;line-height:1}
+.brand{position:absolute;left:0;right:0;top:1752px;transform:translateY(-50%);text-align:center;font-family:'CardBrand',sans-serif;font-weight:700;font-size:70px;letter-spacing:.2em;color:var(--brand);line-height:1;padding-left:.2em}
 .mode-laser .bg{filter:grayscale(1) contrast(1.4) brightness(1.08)}
-.mode-laser .to,.mode-laser .from,.mode-laser .main,.mode-laser .sub{color:#111}
+.mode-laser .to,.mode-laser .from,.mode-laser .msg,.mode-laser .brand{color:#111}
 </style></head>
 <body><div class="card" id="card">
 <img class="bg" src="assets/bg-landscape.png" alt="">
 <div class="to" id="to"></div>
-<div class="mainwrap"><div class="main" id="main"></div><div class="sub" id="sub"></div></div>
+<div class="msg" id="msg"></div>
 <div class="from" id="from"></div>
+<div class="brand">YUZHI PLANT Gift Card</div>
 </div>
 <script>
 const q=new URLSearchParams(location.search);
 const to=q.get('to')||'', from=q.get('from')||'', main=q.get('main')||'', sub=q.get('sub')||'', mode=q.get('mode')||'print';
 const card=document.getElementById('card'); if(mode==='laser') card.classList.add('mode-laser');
-const fontUrl=q.get('font')||''; if(fontUrl){ const st=document.createElement('style'); st.textContent="@font-face{font-family:'ARYuanB5';src:url('"+fontUrl+"') format('opentype');}"; document.head.appendChild(st); card.style.fontFamily="'ARYuanB5','Huninn','Noto Sans TC',sans-serif"; }
+const st=document.createElement('style');
+st.textContent="@font-face{font-family:'CardZh';src:url('"+(q.get('font')||'')+"') format('opentype');}@font-face{font-family:'CardBrand';font-weight:700;src:url('"+(q.get('brandFont')||'')+"') format('opentype');}";
+document.head.appendChild(st);
 document.getElementById('to').textContent=to?('祝  '+to):'';
 document.getElementById('from').textContent=from;
-const m=document.getElementById('main'); m.textContent=main;
-const s=document.getElementById('sub'); s.textContent=sub; if(!sub) s.style.display='none';
-// 依字數縮：主句塞進 84% 寬；副句塞進 80% 寬
-function fit(el,maxW,maxPx,minPx){let px=maxPx; el.style.fontSize=px+'px'; while(el.scrollWidth>maxW && px>minPx){px-=6; el.style.fontSize=px+'px';} if(px<=minPx && el.scrollWidth>maxW){el.style.whiteSpace='normal'; el.style.lineHeight='1.25';}}
-// 主句：一行放得下（字級 ≥ 260）就一行；放不下就在最靠中間的逗號／頓號斷成兩行（行尾標點拿掉、兩行同字級）
-function oneLinePx(el,txt,maxW,maxPx){ el.textContent=txt; let px=maxPx; el.style.fontSize=px+'px'; while(el.scrollWidth>maxW && px>60){px-=4; el.style.fontSize=px+'px';} return px; }
+const msg=document.getElementById('msg');
+// 賀詞排版（Wayne 2026-10-08：不要大小字）：所有行同一字級、主句與副句靠留白分組。
+// 1) 先試「主句一行＋副句一行」；最長行放得下就用（兩行近等長、版面方正）
+// 2) 放不下（字級 < 140）就在逗號／頓號斷開、每段一行（行尾標點拿掉）
+// 3) 輸入裡的「/」或換行＝指定斷行，最優先
+// 字級＝min(420, 最長行塞進 84% 寬, 整塊塞進「祝」行與署名之間的高度)
+const ZONE_W=2400*0.84, GAP_IN=0.40, GAP_GROUP=0.72;   // 行距：同一句內 0.40em、主句與副句之間 0.72em（字級一樣、靠留白分組）
+function segsOf(t){ return t.split(/[，、,；]/).map(s=>s.trim()).filter(Boolean); }
+function groupsFor(stage){
+  const parts=[main,sub].filter(Boolean);
+  if(parts.some(p=>/[\/\n]/.test(p))) return parts.map(p=>p.split(/[\/\n]/).map(s=>s.trim()).filter(Boolean));
+  if(stage===1) return parts.map(p=>[p]);
+  return parts.map(segsOf);
+}
+function blockEm(groups){ const n=groups.reduce((a,g)=>a+g.length,0); const inner=groups.reduce((a,g)=>a+Math.max(0,g.length-1),0); return n+inner*GAP_IN+Math.max(0,groups.length-1)*GAP_GROUP; }
+function measure(lines,ls){
+  const probe=document.createElement('div'); probe.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font-size:100px;letter-spacing:'+ls+'em;font-family:CardZh;line-height:1';
+  document.body.appendChild(probe); let w=0; for(const l of lines){ probe.textContent=l+''; w=Math.max(w,probe.getBoundingClientRect().width); } probe.remove(); return w/100;
+}
 document.fonts.ready.then(()=>{
-  const MAXW=2400*0.84;
-  let px=oneLinePx(m,main,MAXW,420);
-  const cuts=[...main].map((c,i)=>/[，、,；]/.test(c)?i:-1).filter(i=>i>0&&i<[...main].length-1);
-  if(px<230 && cuts.length){
-    const chars=[...main], mid=chars.length/2;
-    const cut=cuts.reduce((a,b)=>Math.abs(b-mid)<Math.abs(a-mid)?b:a);
-    const l1=chars.slice(0,cut).join(''), l2=chars.slice(cut+1).join('');
-    const p1=oneLinePx(m,l1,MAXW,215), p2=oneLinePx(m,l2,MAXW,215);
-    px=Math.min(p1,p2);
-    m.innerHTML=''; [l1,l2].forEach(t=>{const d=document.createElement('div'); d.textContent=t; m.appendChild(d);});
-    m.style.fontSize=px+'px'; m.style.lineHeight='1.32';
-  } else { m.textContent=main; m.style.fontSize=px+'px'; }
-  if(sub) fit(s, 2400*0.80, 100, 64);
-  // 防撞：主句區塊不得碰到上方「祝…」與下方署名，碰到就整體縮小
-  const wrap=document.querySelector('.mainwrap'), toEl=document.getElementById('to'), fromEl=document.getElementById('from');
-  for(let k=0;k<40;k++){
-    const w=wrap.getBoundingClientRect(), a=toEl.getBoundingClientRect(), b=fromEl.getBoundingClientRect();
-    if(w.top>=a.bottom+40 && w.bottom<=b.top-40) break;
-    const cur=parseFloat(m.style.fontSize)||px; m.style.fontSize=(cur-8)+'px';
-  }
+  const toB=document.getElementById('to').getBoundingClientRect(), frT=document.getElementById('from').getBoundingClientRect();
+  const top=toB.bottom+90, bottom=frT.top-90, zoneH=bottom-top;
+  function sizeFor(groups){ const lines=groups.flat(); const ls=lines.length===1&&[...lines[0]].length<=6?0.16:0.12; const wPer=measure(lines,ls); return {ls, px:Math.floor(Math.min(420, ZONE_W/wPer, zoneH*0.9/blockEm(groups)))}; }
+  let groups=groupsFor(1), s=sizeFor(groups);
+  if(s.px<140){ const g2=groupsFor(2); if(g2.flat().length>groups.flat().length){ groups=g2; s=sizeFor(groups);} }
+  msg.innerHTML='';
+  groups.forEach((g,gi)=>g.forEach((t,li)=>{ const d=document.createElement('div'); d.textContent=t; d.style.letterSpacing=s.ls+'em'; d.style.paddingLeft=s.ls+'em';
+    if(gi||li) d.style.marginTop=Math.round(s.px*(li?GAP_IN:GAP_GROUP))+'px'; msg.appendChild(d); }));
+  msg.style.fontSize=s.px+'px';
+  const h=msg.getBoundingClientRect().height; msg.style.top=Math.round(top+(zoneH-h)/2)+'px';
+  document.body.setAttribute('data-px',String(s.px)); document.body.setAttribute('data-lines',String(groups.flat().length));
   document.body.setAttribute('data-ready','1');
 });
-if(sub){ const wrap=document.querySelector('.mainwrap'); wrap.style.top='49%'; }
 </script></body></html>
