@@ -2,78 +2,60 @@
 <html lang="zh-Hant"><head><meta charset="utf-8">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500&display=swap">
 <style>
-/* 185mm × 122mm（橫向）@ 300dpi → 2185 × 1441 px；直向 132×190 → 1559 × 2244。版面照 Express「送禮盆栽祝賀卡片」 */
-:root{--w:2185px;--h:1441px;--ink:#4a4a48;--ink2:#5c5c59;--line:#9a9a96;--leaf-fill:#c9d4cd;--leaf-line:#8d9c93;--brand:#b9c0bb}
+/* 底圖＝Express「送禮盆栽祝賀卡片」去字版（assets/bg-landscape.png、2400×1808、4:3）；文字位置照範例（600×452 座標換算成百分比） */
+:root{--ink:#4b4b48;--ink2:#5a5a57}
 html,body{margin:0;padding:0;background:#fff}
-.card{position:relative;width:var(--w);height:var(--h);overflow:hidden;font-family:'Huninn','Noto Sans TC',sans-serif;color:var(--ink);background:#f4f4f2}
-.paper{position:absolute;inset:0;background:
-  radial-gradient(1200px 800px at 30% 20%,rgba(255,255,255,.9),rgba(255,255,255,0) 70%),
-  radial-gradient(900px 700px at 80% 85%,rgba(255,255,255,.7),rgba(255,255,255,0) 70%),#f1f1ee}
-.grain{position:absolute;inset:0;opacity:.55;mix-blend-mode:multiply}
-.frame{position:absolute;left:62px;top:62px;right:62px;bottom:120px;border:3px solid var(--line);border-radius:96px;opacity:.85}
-.leaf{position:absolute;right:-30px;top:-40px;width:1180px;height:720px}
-.mode-laser .leaf{filter:grayscale(1) contrast(1.6)}
-.to{position:absolute;left:200px;top:215px;font-size:92px;letter-spacing:.14em;white-space:nowrap;color:var(--ink2)}
-.main{position:absolute;left:0;right:0;top:46%;transform:translateY(-50%);text-align:center;font-size:330px;letter-spacing:.18em;line-height:1;white-space:nowrap;color:var(--ink)}
-.main.long{font-size:230px;letter-spacing:.1em}
-.main.xlong{font-size:170px;letter-spacing:.06em;white-space:normal;line-height:1.25;padding:0 220px}
-.from{position:absolute;right:210px;bottom:260px;font-size:92px;letter-spacing:.14em;white-space:nowrap;color:var(--ink2)}
-.brand{position:absolute;left:0;right:0;bottom:34px;text-align:center;font-family:'Noto Sans TC',sans-serif;font-weight:500;font-size:52px;letter-spacing:.36em;color:var(--brand)}
-.portrait .frame{left:56px;top:56px;right:56px;bottom:110px;border-radius:84px}
-.portrait .leaf{width:960px;height:600px;right:-60px;top:-50px}
-.portrait .to{left:150px;top:230px;font-size:84px}
-.portrait .main{font-size:300px;letter-spacing:.14em}
-.portrait .main.long{font-size:220px}
-.portrait .main.xlong{font-size:160px;padding:0 160px}
-.portrait .from{right:150px;bottom:280px;font-size:84px}
-/* 雷射模式：純黑白、無紙紋、框線加粗 */
-.mode-laser{background:#fff;color:#111}
-.mode-laser .paper,.mode-laser .grain{display:none}
-.mode-laser .frame{border-color:#111;border-width:6px;opacity:1}
-.mode-laser .to,.mode-laser .from,.mode-laser .main{color:#111}
-.mode-laser .brand{color:#111}
+.card{position:relative;width:2400px;height:1808px;overflow:hidden;font-family:'Huninn','Noto Sans TC',sans-serif;color:var(--ink)}
+.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.to{position:absolute;left:9.6%;top:19%;font-size:104px;letter-spacing:.14em;white-space:nowrap;color:var(--ink2)}
+.mainwrap{position:absolute;left:8%;right:8%;top:50%;transform:translateY(-50%);text-align:center}
+.main{font-size:380px;letter-spacing:.16em;line-height:1.05;white-space:nowrap;color:var(--ink)}
+.sub{margin-top:60px;font-size:100px;letter-spacing:.12em;line-height:1.3;color:var(--ink2);white-space:nowrap}
+.from{position:absolute;right:9.2%;top:80.5%;font-size:104px;letter-spacing:.14em;white-space:nowrap;color:var(--ink2)}
+.mode-laser .bg{filter:grayscale(1) contrast(1.4) brightness(1.08)}
+.mode-laser .to,.mode-laser .from,.mode-laser .main,.mode-laser .sub{color:#111}
 </style></head>
 <body><div class="card" id="card">
-<div class="paper"></div>
-<svg class="grain" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .55  0 0 0 0 .55  0 0 0 0 .52  0 0 0 .18 0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
-<div class="frame"></div>
-<svg class="leaf" viewBox="0 0 1180 720" xmlns="http://www.w3.org/2000/svg">
-  <defs><filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.2"/></filter>
-  <g id="lf"><path d="M0 0 C 40 -70, 130 -80, 200 -10 C 130 60, 40 60, 0 0 Z"/></g></defs>
-  <g fill="var(--leaf-fill)" opacity=".85" filter="url(#soft)">
-    <use href="#lf" transform="translate(520 300) rotate(-48) scale(.95)"/><use href="#lf" transform="translate(600 220) rotate(-70) scale(.8)"/>
-    <use href="#lf" transform="translate(700 160) rotate(-30) scale(1.05)"/><use href="#lf" transform="translate(820 110) rotate(-62) scale(.9)"/>
-    <use href="#lf" transform="translate(900 210) rotate(-10) scale(1)"/><use href="#lf" transform="translate(1000 120) rotate(-50) scale(.85)"/>
-    <use href="#lf" transform="translate(1040 300) rotate(-5) scale(1.1)"/><use href="#lf" transform="translate(780 330) rotate(-25) scale(.75)"/>
-    <use href="#lf" transform="translate(640 420) rotate(-58) scale(.7)"/><use href="#lf" transform="translate(1100 440) rotate(-40) scale(.9)"/>
-    <use href="#lf" transform="translate(880 450) rotate(-15) scale(.8)"/><use href="#lf" transform="translate(430 170) rotate(-80) scale(.65)"/>
-  </g>
-  <g fill="none" stroke="var(--leaf-line)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".9">
-    <path d="M1180 60 C 1020 120, 880 170, 760 250 C 690 300, 620 370, 560 460 C 530 510, 500 560, 470 620"/>
-    <path d="M1180 250 C 1080 280, 1000 330, 930 400 C 890 440, 850 490, 820 560"/>
-    <path d="M1010 20 C 960 80, 920 140, 900 210"/>
-    <use href="#lf" transform="translate(520 300) rotate(-48) scale(.95)"/><use href="#lf" transform="translate(600 220) rotate(-70) scale(.8)"/>
-    <use href="#lf" transform="translate(700 160) rotate(-30) scale(1.05)"/><use href="#lf" transform="translate(820 110) rotate(-62) scale(.9)"/>
-    <use href="#lf" transform="translate(900 210) rotate(-10) scale(1)"/><use href="#lf" transform="translate(1000 120) rotate(-50) scale(.85)"/>
-    <use href="#lf" transform="translate(1040 300) rotate(-5) scale(1.1)"/><use href="#lf" transform="translate(780 330) rotate(-25) scale(.75)"/>
-    <use href="#lf" transform="translate(640 420) rotate(-58) scale(.7)"/><use href="#lf" transform="translate(1100 440) rotate(-40) scale(.9)"/>
-    <use href="#lf" transform="translate(880 450) rotate(-15) scale(.8)"/><use href="#lf" transform="translate(430 170) rotate(-80) scale(.65)"/>
-    <path d="M520 300 l 130 -35 M600 220 l 90 -60 M700 160 l 150 -10 M820 110 l 80 -70 M900 210 l 150 15 M1000 120 l 90 -60 M1040 300 l 160 20 M780 330 l 110 -30 M640 420 l 70 -70 M1100 440 l 120 -70 M880 450 l 120 -10 M430 170 l 40 -90" opacity=".7"/>
-  </g>
-</svg>
+<img class="bg" src="assets/bg-landscape.png" alt="">
 <div class="to" id="to"></div>
-<div class="main" id="main"></div>
+<div class="mainwrap"><div class="main" id="main"></div><div class="sub" id="sub"></div></div>
 <div class="from" id="from"></div>
-<div class="brand">YUZHI PLANT Gift Card</div>
 </div>
 <script>
 const q=new URLSearchParams(location.search);
-const to=q.get('to')||'', from=q.get('from')||'', main=q.get('main')||'', orient=q.get('orient')||'landscape', mode=q.get('mode')||'print';
-const card=document.getElementById('card');
-if(orient==='portrait'){document.documentElement.style.setProperty('--w','1559px');document.documentElement.style.setProperty('--h','2244px');card.classList.add('portrait');}
-if(mode==='laser') card.classList.add('mode-laser');
+const to=q.get('to')||'', from=q.get('from')||'', main=q.get('main')||'', sub=q.get('sub')||'', mode=q.get('mode')||'print';
+const card=document.getElementById('card'); if(mode==='laser') card.classList.add('mode-laser');
+const fontUrl=q.get('font')||''; if(fontUrl){ const st=document.createElement('style'); st.textContent="@font-face{font-family:'ARYuanB5';src:url('"+fontUrl+"') format('opentype');}"; document.head.appendChild(st); card.style.fontFamily="'ARYuanB5','Huninn','Noto Sans TC',sans-serif"; }
 document.getElementById('to').textContent=to?('祝  '+to):'';
 document.getElementById('from').textContent=from;
 const m=document.getElementById('main'); m.textContent=main;
-const n=[...main].length; if(n>8) m.classList.add('xlong'); else if(n>4) m.classList.add('long');
+const s=document.getElementById('sub'); s.textContent=sub; if(!sub) s.style.display='none';
+// 依字數縮：主句塞進 84% 寬；副句塞進 80% 寬
+function fit(el,maxW,maxPx,minPx){let px=maxPx; el.style.fontSize=px+'px'; while(el.scrollWidth>maxW && px>minPx){px-=6; el.style.fontSize=px+'px';} if(px<=minPx && el.scrollWidth>maxW){el.style.whiteSpace='normal'; el.style.lineHeight='1.25';}}
+// 主句：一行放得下（字級 ≥ 260）就一行；放不下就在最靠中間的逗號／頓號斷成兩行（行尾標點拿掉、兩行同字級）
+function oneLinePx(el,txt,maxW,maxPx){ el.textContent=txt; let px=maxPx; el.style.fontSize=px+'px'; while(el.scrollWidth>maxW && px>60){px-=4; el.style.fontSize=px+'px';} return px; }
+document.fonts.ready.then(()=>{
+  const MAXW=2400*0.84;
+  let px=oneLinePx(m,main,MAXW,420);
+  const cuts=[...main].map((c,i)=>/[，、,；]/.test(c)?i:-1).filter(i=>i>0&&i<[...main].length-1);
+  if(px<230 && cuts.length){
+    const chars=[...main], mid=chars.length/2;
+    const cut=cuts.reduce((a,b)=>Math.abs(b-mid)<Math.abs(a-mid)?b:a);
+    const l1=chars.slice(0,cut).join(''), l2=chars.slice(cut+1).join('');
+    const p1=oneLinePx(m,l1,MAXW,215), p2=oneLinePx(m,l2,MAXW,215);
+    px=Math.min(p1,p2);
+    m.innerHTML=''; [l1,l2].forEach(t=>{const d=document.createElement('div'); d.textContent=t; m.appendChild(d);});
+    m.style.fontSize=px+'px'; m.style.lineHeight='1.32';
+  } else { m.textContent=main; m.style.fontSize=px+'px'; }
+  if(sub) fit(s, 2400*0.80, 100, 64);
+  // 防撞：主句區塊不得碰到上方「祝…」與下方署名，碰到就整體縮小
+  const wrap=document.querySelector('.mainwrap'), toEl=document.getElementById('to'), fromEl=document.getElementById('from');
+  for(let k=0;k<40;k++){
+    const w=wrap.getBoundingClientRect(), a=toEl.getBoundingClientRect(), b=fromEl.getBoundingClientRect();
+    if(w.top>=a.bottom+40 && w.bottom<=b.top-40) break;
+    const cur=parseFloat(m.style.fontSize)||px; m.style.fontSize=(cur-8)+'px';
+  }
+  document.body.setAttribute('data-ready','1');
+});
+if(sub){ const wrap=document.querySelector('.mainwrap'); wrap.style.top='49%'; }
 </script></body></html>
